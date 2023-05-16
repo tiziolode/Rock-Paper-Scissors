@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Rock-Paper-Scissors</title>
+    <style>
+        body {
+            text-align: center;
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+        }
+        
+        h1 {
+            margin-top: 50px;
+            color: #333333;
+        }
+        
+        #result {
+            margin-top: 30px;
+            font-weight: bold;
+            font-size: 20px;
+            color: #333333;
+        }
+        
+        #choices {
+            margin-top: 30px;
+        }
+        
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            margin-right: 10px;
+            background-color: #333333;
+            color: #ffffff;
+            border: none;
+            cursor: pointer;
+        }
+        
+        button:hover {
+            background-color: #555555;
+        }
+        
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            transition: background-color 0.5s ease;
+        }
+        
+        .game {
+            background-color: #ffffff;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .win {
+            background-color: #00cc00;
+        }
+        
+        .tie {
+            background-color: #ffcc00;
+        }
+        
+        .lose {
+            background-color: #ff0000;
+        }
+        
+        .loading {
+            display: inline-block;
+            animation: rotation 1s linear infinite;
+        }
+        
+        @keyframes rotation {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="game">
+            <h1>Rock-Paper-Scissors</h1>
+            <div id="result"></div>
+            <div id="choices">
+                <button onclick="playGame('rock')">Rock</button>
+                <button onclick="playGame('paper')">Paper</button>
+                <button onclick="playGame('scissors')">Scissors</button>
+            </div>
+            <div id="loading" class="loading"></div>
+        </div>
+    </div>
+    
+    <script>
+        function getComputerChoice() {
+            var choices = ["rock", "paper", "scissors"];
+            var randomIndex = Math.floor(Math.random() * choices.length);
+            return choices[randomIndex];
+        }
+
+        function determineWinner(playerChoice, computerChoice) {
+            if (playerChoice === computerChoice) {
+                return "tie";
+            } else if (
+                (playerChoice === "rock" && computerChoice === "scissors") ||
+                (playerChoice === "paper" && computerChoice === "rock") ||
+                (playerChoice === "scissors" && computerChoice === "paper")
+            ) {
+                return "win";
+            } else {
+                return "lose";
+            }
+        }
+
+        function playGame(playerChoice) {
+            var container = document.querySelector(".container");
+            var resultDiv = document.getElementById("result");
+            var loadingDiv = document.getElementById("loading");
+            var computerChoice = getComputerChoice();
+            var result = determineWinner(playerChoice, computerChoice);
+            
+            
+            // Display loading animation
+            loadingDiv.style.display = "inline-block";
+            setTimeout(function() {
+
+            // Hide loading animation
+            loadingDiv.style.display = "none";      
+
+            // Set the result text and class based on the outcome
+            if (result === "win") {
+                resultDiv.textContent = "You win!";
+                container.classList.add("win");
+                resultDiv.innerHTML = "You chose: " + playerChoice + "<br>Computer chose: " + computerChoice + "<br><br>" + result;
+            } else if (result === "tie") {
+                resultDiv.textContent = "It's a tie!";
+                container.classList.add("tie");
+                resultDiv.innerHTML = "You chose: " + playerChoice + "<br>Computer chose: " + computerChoice + "<br><br>" + result;
+            } else {
+                resultDiv.textContent = "You lose!";
+                container.classList.add("lose");
+                resultDiv.innerHTML = "You chose: " + playerChoice + "<br>Computer chose: " + computerChoice + "<br><br>" + result;
+            }
+                
+            // Reset the result after 10 seconds
+            setTimeout(function() {
+                resultDiv.textContent = "";
+                container.classList.remove("win", "tie", "lose");
+            }, 7000);
+        }, 100);
+    }
+    </script>
+</body>
+</html>
+
+           
